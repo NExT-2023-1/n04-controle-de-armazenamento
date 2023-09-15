@@ -3,6 +3,7 @@ package controllers;
 
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -27,6 +28,13 @@ import jakarta.validation.Valid;
 @RequestMapping("/usuarios")
 
 public class UsuarioController {
+
+    @GetMapping
+    public ResponseEntity<List<Usuario>> listAll(){
+        List<Usuario> listUsuarios = new ArrayList<Usuario>();
+        return new ResponseEntity<List<Usuario>>(listUsuarios, HttpStatus.OK);
+    }
+
 /* 
     @GetMapping
     public ResponseEntity<List<Usuario>> listAll(){

@@ -1,5 +1,6 @@
 package controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,12 @@ import jakarta.validation.Valid;
 
 
 public class ArquivoController {
+
+    @GetMapping
+    public ResponseEntity<List<Arquivos>> listAll(){
+        List<Arquivos> listArquivos = new ArrayList<Arquivos>();
+        return new ResponseEntity<List<Arquivos>>(listArquivos, HttpStatus.OK);
+    }
 /* 
     //private final UsuarioService usuarioService; // Falta criar diretório de servico
 
