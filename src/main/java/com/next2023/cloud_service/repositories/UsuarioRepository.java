@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import com.next2023.cloud_service.entities.Usuario;
 
-@Repository
+//@Repository
 public interface UsuarioRepository extends JpaRepository <Usuario, Long> {
     
 }
