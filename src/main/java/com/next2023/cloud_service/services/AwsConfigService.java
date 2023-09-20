@@ -36,9 +36,9 @@ public class AwsConfigService {
 
     public AmazonS3 amazonS3Client;
     
-    public AwsConfigService(){
-        this.amazonS3Client = this.amazonS3();
-    }
+    //public AwsConfigService(){
+    //    this.amazonS3Client = this.amazonS3();
+    //}
 
    
     @Bean // conectando ao  S3

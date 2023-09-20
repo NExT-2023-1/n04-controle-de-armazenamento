@@ -39,7 +39,7 @@ public class UsuarioController {
     @GetMapping
     public ResponseEntity<List<Usuario>> listAll(){
         List<Usuario> listUsuarios = new ArrayList<Usuario>();
-        awsConfigService.listBuckets();
+        //awsConfigService.listBuckets();
         return new ResponseEntity<List<Usuario>>(listUsuarios, HttpStatus.OK);
     }
 
