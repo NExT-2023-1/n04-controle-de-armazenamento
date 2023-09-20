@@ -19,6 +19,7 @@ import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.Bucket;
+import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectResult;
 import com.amazonaws.services.s3.model.S3Object;
@@ -63,8 +64,8 @@ public class AwsConfigService {
     // ----- CRUD Objetos (Arquivos)
 
     // CREATE - Criando o upload de arquivos - "PUT"
-    public PutObjectResult putObject(String bucketName, String fileName, String filePath){
-        PutObjectRequest request = new PutObjectRequest(bucketName, fileName, new File(filePath));
+    public PutObjectResult putObject(String bucketName, String fileName, InputStream input, ObjectMetadata metadata){
+        PutObjectRequest request = new PutObjectRequest(bucketName, fileName, input, metadata);
         PutObjectResult fileS3 = amazonS3Client.putObject(request);
         return fileS3;
     }
@@ -73,6 +74,7 @@ public class AwsConfigService {
     public InputStream getObject(String bucketName, String fileName) throws IOException{
         S3Object s3object = amazonS3Client.getObject(bucketName, fileName);
         return s3object.getObjectContent();
+
         // S3ObjectInputStream inputStream = s3object.getObjectContent();
         // Transforma o arquivo que tá no buck (InputStream) em um arquivo na raiz do projeto.
         //FileUtils.copyInputStreamToFile(inputStream, new File("." + File.separator + fileName));
