@@ -58,20 +58,5 @@ public class Arquivos {
         this.nomeArquivo = nomeArquivo;
     }
     
-    
-   
-
-    
-    
-
-
 //Incluir ManytoOne
-
-
-
-    
 }
-
-
-
-

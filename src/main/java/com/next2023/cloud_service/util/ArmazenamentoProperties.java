@@ -6,7 +6,6 @@ import org.springframework.context.annotation.PropertySource;
 
 //Incluindo as credenciais de um cliente para acesso ao bucket
 @Configuration
-@PropertySource("application.properties")
 public class ArmazenamentoProperties {
     @Value("${awsS3.accessKey}")
     private String awsS3_accessKey;
