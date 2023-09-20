@@ -2,6 +2,7 @@ package com.next2023.cloud_service.services;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -56,11 +57,6 @@ public class AwsConfigService {
     // Retorna a lista de Buckets
     public List<Bucket> listBuckets(){
         List<Bucket> bucketList = amazonS3Client.listBuckets();
-        
-        for (Bucket bucket : bucketList) {
-            System.out.println(bucket.getName());
-        }
-
         return bucketList;
     }
 
@@ -74,11 +70,12 @@ public class AwsConfigService {
     }
 
     // READ - Retorna o arquivo do bucket (download) e salva no raiz do projeto
-    public void getObject(String bucketName, String fileName) throws IOException{
+    public InputStream getObject(String bucketName, String fileName) throws IOException{
         S3Object s3object = amazonS3Client.getObject(bucketName, fileName);
-        S3ObjectInputStream inputStream = s3object.getObjectContent();
+        return s3object.getObjectContent();
+        // S3ObjectInputStream inputStream = s3object.getObjectContent();
         // Transforma o arquivo que tá no buck (InputStream) em um arquivo na raiz do projeto.
-        FileUtils.copyInputStreamToFile(inputStream, new File("." + File.separator + fileName));
+        //FileUtils.copyInputStreamToFile(inputStream, new File("." + File.separator + fileName));
     }
 
     // DELETE - apaga um arquivo dentro do bucket
