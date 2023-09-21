@@ -74,8 +74,22 @@
 		<dependency>
     		<groupId>javax.inject</groupId>
    			 <artifactId>javax.inject</artifactId>
-    <version>1</version>
-</dependency>
+    		<version>1</version>
+		</dependency>
+
+		 <dependency>
+        <groupId>mysql</groupId>
+        <artifactId>mysql-connector-java</artifactId>
+        <version>8.0.26</version> <!-- Versão atual do driver MySQL -->
+    </dependency>
+
+	<!--- incluindo dependency do Hibernate-->
+	 <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>6.1.7.Final</version>
+        </dependency>
+
 	</dependencies>
 
 	<build>

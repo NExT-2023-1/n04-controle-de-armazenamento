@@ -13,6 +13,7 @@ public class UsuarioDTO {
     private Date dataNascimento;
     private char tipoPlano;
     private Long qtdeArquivosUtilizados;
+    
 
 
 }
