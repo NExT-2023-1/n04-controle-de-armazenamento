@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.next2023.cloud_service.dto.UsuarioDTO;
 import com.next2023.cloud_service.entities.Usuario;
 import com.next2023.cloud_service.repositories.UsuarioRepository;
 import com.next2023.cloud_service.services.AwsConfigService;
@@ -48,7 +49,28 @@ public class UsuarioController {
         
         return new ResponseEntity<List<Usuario>>(listUsuarios, HttpStatus.OK);
     }
+    @PostMapping
+    public ResponseEntity<Usuario> create(@RequestBody @Valid UsuarioDTO usuarioDTO){ //Necessário criar DTO
+         Usuario usuario = usuarioService.create(usuarioDTO); //criar pasta de SERVICO
+         
+        return new ResponseEntity<>(usuario, HttpStatus.CREATED);
 
+    }
+
+     @PutMapping
+    public ResponseEntity<Usuario> update(@RequestBody @Valid UsuarioDTO usuarioDTO){ //Necessário criar DTO
+         Usuario usuario = usuarioService.update(usuarioDTO); //criar pasta de SERVICO
+         
+        return new ResponseEntity<>(usuario, HttpStatus.CREATED);
+
+    }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable long id) {
+        if (usuarioService.delete(id)){
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
 /* 
     @GetMapping
     public ResponseEntity<List<Usuario>> listAll(){

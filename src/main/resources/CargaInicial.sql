@@ -9,7 +9,7 @@ VALUES
 
 INSERT INTO Arquivos (tamanho, nome, usuario_id)
 VALUES
-    (512, 'relatório.txt', 1),
+    (512, 'relatório.txt', 2),
     (4096, 'planta baixa.jpg', 2),
     (1024, 'orçamento.xlsx', 3),
     (2048, 'tese.ppt', 4);
