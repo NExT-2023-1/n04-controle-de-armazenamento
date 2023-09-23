@@ -3,6 +3,8 @@ package controllers;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,38 +18,52 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.next2023.cloud_service.entities.Arquivos;
-import com.next2023.cloud_service.entities.Usuario;
+import com.next2023.cloud_service.entities.Arquivos;
+import com.next2023.cloud_service.services.ArquivosService;
+import com.next2023.cloud_service.services.ArquivosService;
 
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/arquivos")
-
-
-
 public class ArquivoController {
+
+    @Inject
+    private ArquivosService arquivosService;
 
     @GetMapping
     public ResponseEntity<List<Arquivos>> listAll(){
-        List<Arquivos> listArquivos = new ArrayList<Arquivos>();
+        List<Arquivos> listArquivos = arquivosService.getArquivos();
+        
         return new ResponseEntity<List<Arquivos>>(listArquivos, HttpStatus.OK);
     }
+
+    @PostMapping
+    public ResponseEntity<Arquivos> create(@RequestBody @Valid Arquivos arquivo){ //Necessário criar DTO
+        Arquivos arquivoCriado = arquivosService.create(arquivo); //criar pasta de SERVICO
+
+        if(arquivoCriado == null){
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+
+        return new ResponseEntity<>(arquivoCriado, HttpStatus.CREATED);
+    }
+
+
 /* 
-    //private final UsuarioService usuarioService; // Falta criar diretório de servico
+    //private final ArquivosService usuarioService; // Falta criar diretório de servico
 
      @GetMapping
     public ResponseEntity<List<Arquivos>> listAll(){
         List<Arquivos> listArquivos = this.arquivosService.listAll();
         return new ResponseEntity<List<Arquivos>>(listArquivos, HttpStatus.OK);
     }
+*/
 
-    @PostMapping
-    public ResponseEntity<Arquivos> create(@RequestBody @Valid ArquivosDTO arquivosDTO){ //Necessário criar DTO
-    Arquivos arquivos = arquivosService.create(arquivosDTO); //criar pasta de SERVICO
-    return new ResponseEntity<>(arquivos, HttpStatus.CREATED);
 
-    }
 
+
+    /*
 
     @GetMapping("/{id}")
     public ResponseEntity<Arquivos>getById (@PathVariable long id) {

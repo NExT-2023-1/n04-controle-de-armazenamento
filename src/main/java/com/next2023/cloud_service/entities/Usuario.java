@@ -11,10 +11,10 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 
 @Entity
-
-
+@Table(name = "usuario")
 public class Usuario {
     
     @Id
@@ -29,10 +29,11 @@ public class Usuario {
     @Column(name = "endereco",nullable = false)
     private String endereco;
     @Column(name = "plano", nullable = false)
-    private char tipoPlano;  //A, B, ou C - Plus: criar domínio para essa variável
+    private String tipoPlano;  //A, B, ou C - Plus: criar domínio para essa variável
     @Column(name = "qtd_arquivos_utilizados", nullable = false)
-    private Long qtdeArquivosUtilizados;
-    
+    private Integer qtdeArquivosUtilizados;
+
+         
     //Cascade serve para realizar a ação, simultaneamente, no usuario e todos os arquivos (nesse caso a única entidade existe)
     @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "usuario") //Cascade ALL: já engloba todos os tipos (presist, delete)
     private List<Arquivos> arquivos;
@@ -41,8 +42,8 @@ public class Usuario {
     public Usuario() {
     }
 
-    public Usuario(Long id, String nome, String cpf, Date dataNascimento, String endereco, char tipoPlano,
-            Long qtdeArquivosUtilizados) {
+    public Usuario(Long id, String nome, String cpf, Date dataNascimento, String endereco, String tipoPlano,
+            Integer qtdeArquivosUtilizados) {
         this.id = id;
         this.nome = nome;
         this.cpf = cpf;
@@ -50,6 +51,8 @@ public class Usuario {
         this.endereco = endereco;
         this.tipoPlano = tipoPlano;
         this.qtdeArquivosUtilizados = qtdeArquivosUtilizados;
+
+       
     }
 
 
@@ -69,10 +72,10 @@ public class Usuario {
     public String getEndereco() {
         return endereco;
     }
-    public char getTipoPlano() {
+    public String getTipoPlano() {
         return tipoPlano;
     }
-    public Long getQtdeArquivosUtilizados() {
+    public Integer getQtdeArquivosUtilizados() {
         return qtdeArquivosUtilizados;
     }
     
@@ -92,21 +95,27 @@ public class Usuario {
     public void setEndereco(String endereco) {
         this.endereco = endereco;
     }
-    public void setTipoPlano(char tipoPlano) {
+    public void setTipoPlano(String tipoPlano) {
         this.tipoPlano = tipoPlano;
     }
-    public void setQtdeArquivosUtilizados(Long qtdeArquivosUtilizados) {
+    public void setQtdeArquivosUtilizados(Integer qtdeArquivosUtilizados) {
         this.qtdeArquivosUtilizados = qtdeArquivosUtilizados;
     }
-    
-    
 
+    public List<Arquivos> getArquivos() {
+        return arquivos;
+    }
+
+    public void setArquivos(List<Arquivos> arquivos) {
+        this.arquivos = arquivos;
+    }
+
+    public void incrementarQtdeArquivosUtilizados(){
+        this.qtdeArquivosUtilizados++;
+    }
 
     
-    
-    
-
-    
+                
 
 //Incluir OneToMany  
 
