@@ -32,10 +32,11 @@ public class Usuario {
     private String tipoPlano;  //A, B, ou C - Plus: criar domínio para essa variável
     @Column(name = "qtd_arquivos_utilizados", nullable = false)
     private Integer qtdeArquivosUtilizados;
-    
+
+         
     //Cascade serve para realizar a ação, simultaneamente, no usuario e todos os arquivos (nesse caso a única entidade existe)
-    //@OneToMany(cascade = {CascadeType.ALL}, mappedBy = "usuario") //Cascade ALL: já engloba todos os tipos (presist, delete)
-    //private List<Arquivos> arquivos;
+    @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "usuario") //Cascade ALL: já engloba todos os tipos (presist, delete)
+    private List<Arquivos> arquivos;
 
     //Construtores - sem usar o lombok
     public Usuario() {
@@ -50,6 +51,8 @@ public class Usuario {
         this.endereco = endereco;
         this.tipoPlano = tipoPlano;
         this.qtdeArquivosUtilizados = qtdeArquivosUtilizados;
+
+       
     }
 
 
@@ -98,15 +101,21 @@ public class Usuario {
     public void setQtdeArquivosUtilizados(Integer qtdeArquivosUtilizados) {
         this.qtdeArquivosUtilizados = qtdeArquivosUtilizados;
     }
-    
-    
 
+    public List<Arquivos> getArquivos() {
+        return arquivos;
+    }
+
+    public void setArquivos(List<Arquivos> arquivos) {
+        this.arquivos = arquivos;
+    }
+
+    public void incrementarQtdeArquivosUtilizados(){
+        this.qtdeArquivosUtilizados++;
+    }
 
     
-    
-    
-
-    
+                
 
 //Incluir OneToMany  
 

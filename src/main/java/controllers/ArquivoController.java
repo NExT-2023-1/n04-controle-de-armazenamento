@@ -26,9 +26,6 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/arquivos")
-
-
-
 public class ArquivoController {
 
     @Inject
@@ -40,6 +37,19 @@ public class ArquivoController {
         
         return new ResponseEntity<List<Arquivos>>(listArquivos, HttpStatus.OK);
     }
+
+    @PostMapping
+    public ResponseEntity<Arquivos> create(@RequestBody @Valid Arquivos arquivo){ //Necessário criar DTO
+        Arquivos arquivoCriado = arquivosService.create(arquivo); //criar pasta de SERVICO
+
+        if(arquivoCriado == null){
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+
+        return new ResponseEntity<>(arquivoCriado, HttpStatus.CREATED);
+    }
+
+
 /* 
     //private final ArquivosService usuarioService; // Falta criar diretório de servico
 
@@ -48,14 +58,12 @@ public class ArquivoController {
         List<Arquivos> listArquivos = this.arquivosService.listAll();
         return new ResponseEntity<List<Arquivos>>(listArquivos, HttpStatus.OK);
     }
+*/
 
-    @PostMapping
-    public ResponseEntity<Arquivos> create(@RequestBody @Valid ArquivosDTO arquivosDTO){ //Necessário criar DTO
-    Arquivos arquivos = arquivosService.create(arquivosDTO); //criar pasta de SERVICO
-    return new ResponseEntity<>(arquivos, HttpStatus.CREATED);
 
-    }
 
+
+    /*
 
     @GetMapping("/{id}")
     public ResponseEntity<Arquivos>getById (@PathVariable long id) {
