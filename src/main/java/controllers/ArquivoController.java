@@ -45,12 +45,12 @@ public class ArquivoController {
 
     //public ResponseEntity<Arquivos> create(@RequestBody @Valid Arquivos dadosArquivo, MultipartFile arquivo) throws IOException{
     
-    @PostMapping("/{id}")
-    public ResponseEntity<Arquivos> create(@PathVariable long id,MultipartFile arquivo) throws IOException{ //Necessário criar DTO
-        //Arquivos arquivoCriado = arquivosService.create(dadosArquivo); //criar pasta de SERVICO
-        String nomeArquivo = id+"_"+arquivo.getOriginalFilename();
+    @PostMapping("/{usuario_id}")
+    public ResponseEntity<Arquivos> create(@PathVariable long usuario_id,MultipartFile arquivo) throws IOException{ //Necessário criar DTO
+
+        Arquivos arquivoInfo = arquivosService.registrarArquivo(usuario_id, arquivo); 
         awsConfigService.realizarConexaoComS3();
-        awsConfigService.putObject(nomeArquivo, arquivo.getInputStream(), null);
+        awsConfigService.enviarArquivo(arquivoInfo.getNomeArquivo(), arquivo.getInputStream(), null);
 
         /*
         if(arquivoCriado == null){

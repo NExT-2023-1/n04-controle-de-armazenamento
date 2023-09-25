@@ -61,7 +61,7 @@ public class AwsConfigService {
     // ----- CRUD Objetos (Arquivos)
 
     // CREATE - Criando o upload de arquivos - "PUT"
-    public PutObjectResult putObject(String fileName, InputStream input, ObjectMetadata metadata){
+    public PutObjectResult enviarArquivo(String fileName, InputStream input, ObjectMetadata metadata){
         String bucketName = properties.getAwsS3_bucketName();
         PutObjectRequest request = new PutObjectRequest(bucketName, fileName, input, metadata);
         PutObjectResult fileS3 = clienteS3.putObject(request);

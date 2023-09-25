@@ -5,6 +5,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.next2023.cloud_service.entities.Arquivos;
 import com.next2023.cloud_service.entities.Usuario;
@@ -18,11 +19,10 @@ public class ArquivosService {
     @Inject
     private UsuarioRepository usuarioRepository;
 
-    public Arquivos create(Arquivos arquivo){
-        Long userId = arquivo.getUsuario().getId();
-        Usuario usuario = usuarioRepository.findById(userId).get();
+    public Arquivos registrarArquivo(Long idUsuario,MultipartFile arquivo){
+        Usuario usuario = usuarioRepository.findById(idUsuario).get();
         List<Arquivos> listaArquivos = usuario.getArquivos();
-        Long armazenamentoUtilizado = arquivo.getTamanhoArquivo();
+        Long armazenamentoUtilizado = (arquivo.getSize())/1024;
 
         for (Arquivos arq : listaArquivos) {
             armazenamentoUtilizado = armazenamentoUtilizado + arq.getTamanhoArquivo();
@@ -51,7 +51,13 @@ public class ArquivosService {
         if (podeRealizarUpload){
             usuario.incrementarQtdeArquivosUtilizados();
             usuarioRepository.save(usuario);
-            return arquivoRepository.save(arquivo);
+            
+            Arquivos arquivoInfo = new Arquivos();
+            arquivoInfo.setNomeArquivo(idUsuario + "_" + arquivo.getOriginalFilename());
+            arquivoInfo.setTamanhoArquivo(arquivo.getSize()/1024);
+            arquivoInfo.setUsuario(usuario);
+
+            return arquivoRepository.save(arquivoInfo);
         }else{
             return null;
         }
