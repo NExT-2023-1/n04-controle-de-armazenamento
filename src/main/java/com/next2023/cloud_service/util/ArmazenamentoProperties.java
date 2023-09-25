@@ -13,12 +13,19 @@ public class ArmazenamentoProperties {
     @Value("${awsS3.secretKey}")
     private String awsS3_secretKey;
 
+    @Value("${awsS3.bucketName}")
+    private String awsS3_bucketName;
+
     public String getAwsS3_accessKey() {
         return awsS3_accessKey;
     }
 
     public String getAwsS3_secretKey() {
         return awsS3_secretKey;
+    }
+
+    public String getAwsS3_bucketName() {
+        return awsS3_bucketName;
     }
 
 }
