@@ -11,7 +11,9 @@ import org.apache.commons.io.FileUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
+import com.amazonaws.SdkClientException;
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
@@ -34,45 +36,41 @@ public class AwsConfigService {
     @Inject
     public AwsConfig awsConfig;
 
-    public AmazonS3 amazonS3Client;
-    
-    //public AwsConfigService(){
-    //    this.amazonS3Client = this.amazonS3();
-    //}
+    @Inject
+    public ArmazenamentoProperties properties;
+    public AmazonS3 clienteS3;
 
-   
-    @Bean // conectando ao  S3
-    private AmazonS3 amazonS3() {
-        AmazonS3 s3client = AmazonS3ClientBuilder
+    // Método responsável por fazer a conexão com a AWS. É chamado no construtor e o seu resultado é adicionado dentro da variável "amazonS3".
+    // A variável "amazonS3" é um objeto da AmazonS3.
+    // A classe AmazonS3 tem os métodos que permite que possamos fazer o envio e manipulação dos arquivos no S3.
+    public AmazonS3 realizarConexaoComS3() {
+        AmazonS3 clienteS3 = AmazonS3ClientBuilder
                 .standard()
                 .withCredentials(new AWSStaticCredentialsProvider(awsConfig.credentials()))
                 .withRegion(Regions.US_EAST_1)
                 .build();
-        this.amazonS3Client = s3client;    
-        return s3client;
+        this.clienteS3 = clienteS3;    
+        return clienteS3;
+    }
 
-    }  // com estas classes já acessamos o bucket para executar os crud
-
-    // ----- CRUD Bucket
-
-    // Retorna a lista de Buckets
     public List<Bucket> listBuckets(){
-        List<Bucket> bucketList = amazonS3Client.listBuckets();
+        List<Bucket> bucketList = clienteS3.listBuckets();
         return bucketList;
     }
 
     // ----- CRUD Objetos (Arquivos)
 
     // CREATE - Criando o upload de arquivos - "PUT"
-    public PutObjectResult putObject(String bucketName, String fileName, InputStream input, ObjectMetadata metadata){
+    public PutObjectResult putObject(String fileName, InputStream input, ObjectMetadata metadata){
+        String bucketName = properties.getAwsS3_bucketName();
         PutObjectRequest request = new PutObjectRequest(bucketName, fileName, input, metadata);
-        PutObjectResult fileS3 = amazonS3Client.putObject(request);
+        PutObjectResult fileS3 = clienteS3.putObject(request);
         return fileS3;
     }
 
     // READ - Retorna o arquivo do bucket (download) e salva no raiz do projeto
     public InputStream getObject(String bucketName, String fileName) throws IOException{
-        S3Object s3object = amazonS3Client.getObject(bucketName, fileName);
+        S3Object s3object = clienteS3.getObject(bucketName, fileName);
         return s3object.getObjectContent();
 
         // S3ObjectInputStream inputStream = s3object.getObjectContent();
@@ -82,7 +80,7 @@ public class AwsConfigService {
 
     // DELETE - apaga um arquivo dentro do bucket
     public void deleteObject(String bucketName, String fileName){
-        amazonS3Client.deleteObject(bucketName,fileName);
+        clienteS3.deleteObject(bucketName,fileName);
     }
 
     // Main criado para testes - Exibe o valor no terminal.
@@ -92,7 +90,6 @@ public class AwsConfigService {
         String filePath = "C:\\Users\\marco\\Documents\\" + fileName;
     
         AwsConfigService ac = new AwsConfigService();
-        ac.amazonS3();
         
         // PUT
         //ac.putObject(bucketName, fileName, filePath);

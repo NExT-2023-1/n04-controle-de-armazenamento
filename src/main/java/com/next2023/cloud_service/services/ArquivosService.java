@@ -17,10 +17,6 @@ public class ArquivosService {
     private ArquivosRepoisitory arquivoRepository;
     @Inject
     private UsuarioRepository usuarioRepository;
-    @Inject
-    private UsuarioService usuarioService;
-    @Inject
-    private AwsConfigService awsConfigService;
 
     public Arquivos create(Arquivos arquivo){
         Long userId = arquivo.getUsuario().getId();
