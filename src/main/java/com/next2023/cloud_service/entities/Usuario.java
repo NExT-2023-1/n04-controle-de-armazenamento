@@ -114,6 +114,10 @@ public class Usuario {
         this.qtdeArquivosUtilizados++;
     }
 
+    public void decrementarQtdeArquivosUtilizados(){
+        this.qtdeArquivosUtilizados--;
+    }
+
     
                 
 

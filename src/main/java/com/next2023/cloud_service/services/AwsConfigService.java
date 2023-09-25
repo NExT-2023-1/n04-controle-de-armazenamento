@@ -79,7 +79,8 @@ public class AwsConfigService {
     }
 
     // DELETE - apaga um arquivo dentro do bucket
-    public void deleteObject(String bucketName, String fileName){
+    public void deleteObject(String fileName){
+        String bucketName = properties.getAwsS3_bucketName();
         clienteS3.deleteObject(bucketName,fileName);
     }
 
