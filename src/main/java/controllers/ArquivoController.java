@@ -48,9 +48,15 @@ public class ArquivoController {
     @PostMapping("/{usuario_id}")
     public ResponseEntity<Arquivos> create(@PathVariable long usuario_id,MultipartFile arquivo) throws IOException{ //Necessário criar DTO
 
-        Arquivos arquivoInfo = arquivosService.registrarArquivo(usuario_id, arquivo); 
-        awsConfigService.realizarConexaoComS3();
-        awsConfigService.enviarArquivo(arquivoInfo.getNomeArquivo(), arquivo.getInputStream(), null);
+        Arquivos arquivoInfo = arquivosService.registrarArquivo(usuario_id, arquivo);
+        if (arquivoInfo != null){
+            awsConfigService.realizarConexaoComS3();
+            awsConfigService.enviarArquivo(arquivoInfo.getNomeArquivo(), arquivo.getInputStream(), null);
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        }else{
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+        
 
         /*
         if(arquivoCriado == null){
@@ -58,19 +64,23 @@ public class ArquivoController {
         } 
 
         return new ResponseEntity<>(arquivoCriado, HttpStatus.CREATED);*/
-        return new ResponseEntity<>(HttpStatus.CREATED);
+
     }
 
-/* 
-    //private final ArquivosService usuarioService; // Falta criar diretório de servico
+    @DeleteMapping("/{idArquivo}")
+    public ResponseEntity<?> delete(@PathVariable long idArquivo) {
+        if(arquivosService.arquivoExiste(idArquivo)){
+            Arquivos arquivoInfo = arquivosService.getArquivoById(idArquivo);
+            awsConfigService.realizarConexaoComS3();
+            awsConfigService.deleteObject(arquivoInfo.getNomeArquivo());
+            arquivosService.delete(idArquivo);
 
-     @GetMapping
-    public ResponseEntity<List<Arquivos>> listAll(){
-        List<Arquivos> listArquivos = this.arquivosService.listAll();
-        return new ResponseEntity<List<Arquivos>>(listArquivos, HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else{
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
     }
-*/
-
 
 
 
